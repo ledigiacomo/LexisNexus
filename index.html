@@ -3,48 +3,98 @@
 	<head>
 		<title>Where's Waldo, Walden, and Waldorf</title>
 		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
-		<script src="C:/Program Files/jquery-3.1.0.js"></script>	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>	
 	</head>
 	<body>
 		<div id="background">
 			<img src="images\PPanther.jpg">
 		</div>
 		<div id="center">
+			<p>
+				<i>Attention Attorney</i>
+			</p>
 			<div id="formDiv">
 				<form onsubmit="return myMap()" id="getLoc">
-					Location: 
+					User: 
 					<select id="drop">
-					  <option value="Rocky Balboa">Rocky Balboa</option>
-					  <option value="Vladimir Putin">Vladimir Putin</option>
-					  <option value="George Bush">George Bush</option>
-					  <option value="Donald J Trump">Donald J Trump</option>
+					  <option value="user1">Rocky Balboa</option>
+					  <option value="user2">Vladimir Putin</option>
+					  <option value="user3">George Bush</option>
+					  <option value="user4">Donald J Trump</option>
 					</select>
-					Distance (in miles): 
-					<input type="number" name="dist" value="40"></input>
+					Distance (in meters): 
+					<input type="number" id="dist" value="40"></input>
 					<input type="submit"></input><br/><br/>
 				</form>
 			</div>
 			<div id="map">
 				<script>
-				var locs = 
-				[
-					{name: "Pink", latitude: 50, longitude: 50, address: "503 N Greensboro St", contacts: 5},
-					{name: "Green", latitude: 49, longitude: 50, address: "504 N Greensboro St", contacts: 5},
-					{name: "Brown", latitude: 50, longitude: 50, address: "503D N Greensboro St", contacts: 5}
-				];
+				// var locs = 
+				// [
+				// 	{name: "Steve", latitude: 50, longitude: -50, address: "503 N Greensboro St", distance: 5, company: "Apple", position: "VP"},
+				// 	{name: "Herbert", latitude: -49, longitude: 50, address: "504 N Greensboro St", distance: 15, company: "Hoover Industries", position: "CEO"},
+				// 	{name: "Baldwin", latitude: 50, longitude: 50, address: "503D N Greensboro St", distance: 35, company: "GE", position: "President"}
+				// ];
 					function myMap() 
 					{
 						var pos;
-						if(document.getElementById("drop").value == "Rocky Balboa")
-							pos = {lat: 39.9526, lng: -75.1652};
-						else if(document.getElementById("drop").value == "Vladimir Putin")
+						var path;
+						var star = 
+						{
+						    url: "http://www.freeiconspng.com/uploads/blue-star-icon-14.png", // url
+						    scaledSize: new google.maps.Size(30, 30), // scaled size
+						    origin: new google.maps.Point(0,0), // origin
+						    anchor: new google.maps.Point(0,0) // anchor
+						};
+
+						var gavel = 
+						{
+						    url: "http://bolivar-circuit-clerk.ms/wp-content/uploads/2016/05/gavel-icon-300px-200x200.png", // url
+						    scaledSize: new google.maps.Size(30, 30), // scaled size
+						    origin: new google.maps.Point(0,0), // origin
+						    anchor: new google.maps.Point(0,0) // anchor
+						};
+
+						if(document.getElementById("drop").value == "user1")
+						{
+							pos = {lat: -31.948, lng: 115.840806,};
+							path = 'user_jsons/user1_TOALL.json';
+						}
+						else if(document.getElementById("drop").value == "user2")
+						{
 							pos = {lat: 55.7520, lng: 37.6175};
-						else if(document.getElementById("drop").value == "George Bush")
-							pos = {lat: 31.5343, lng: -97.4431};
-						else if(document.getElementById("drop").value == "Donald J Trump")
+							path = 'user_jsons/user2_TOALL.json';
+						}
+
+						else if(document.getElementById("drop").value == "user3")
+						{
+							pos = {lat: 51.509865, lng: -0.118092};
+							path = 'user_jsons/user3_TOALL.json';
+						}
+						else if(document.getElementById("drop").value == "user4")
+						{
 							pos = {lat: 40.7624, lng: -73.9738};
+							path = 'user_jsons/user4_TOALL.json';
+						}
 						else 
 							pos = {lat: 0, lng: 0};
+
+						var locs = {};
+						$.getJSON(path, function(data) 
+						{ 
+						   	data;
+						   	var i;
+					  		for(i = 0; i < data.length; i++)
+					  		{
+					  			if(data[i].distance < document.getElementById("dist").value)
+					  			{
+							  		putMarker(data[i]);
+					   	 		}
+
+					   	 		else
+					   	 			continue;
+							}
+						}); 
 
 						//alert("Lat: " + pos.lat + "\nLng: " + pos.lng);
 
@@ -56,24 +106,48 @@
 					   		zoom: 15
 					  	}
 
+					  	var infowindow = new google.maps.InfoWindow();
+
 						var map = new google.maps.Map(mapCanvas, mapOptions);
 					  	var marker = new google.maps.Marker
 						({
 						    position: pos,
-						    map: map
+						    map: map,
+						    title: "Your Location",
+						    icon: star
 					    });
 
 					    $("tbody").empty();
 
-					  	var i;
-					  	for(i = 0; i < locs.length; i++)
-					  	{
-						  	var marker = new google.maps.Marker
-						  	({
-						        position: {lat: locs[i].latitude, lng: locs[i].longitude},
-						        map: map
-					        });
-						}
+					    function putMarker(loc)
+					    {
+					    	var marker = new google.maps.Marker
+							({
+							    position: {lat: loc.latitude, lng: loc.longitude},
+							    map: map,
+							    icon: gavel
+						    });
+
+						    var contentString = '<div id="content">'+
+					            '<div id="siteNotice">'+
+					            '</div>'+
+				            	'<h1 id="firstHeading" class="firstHeading">' + loc.attoney + '</h1>'+
+				            	'<img src="https://i.ytimg.com/vi/TX7xyKx8eqg/hqdefault.jpg" height="35%" width="35%">' + 
+					            '<div id="bodyContent">'+
+					            '<p><b>' + loc.attoney + '</b> is a ' + loc.position +
+					            'with ' + loc.company + '. Their address is ' + loc.address + ', and they are only ' + loc.distance + '  miles away from you.</p>'+
+					            '</div>'+
+					            '</div>';
+
+					        google.maps.event.addListener(marker, 'click', function()
+					        {
+						        infowindow.close(); // Close previously opened infowindow
+						        infowindow.setContent(contentString);
+						        infowindow.open(map, marker);
+						    });
+
+						    $("tbody").append("<tr><td>" + loc.attoney + "</td><td>"  + loc.address + "</td><td>" + loc.distance + "</td><td>" + loc.company + "</td><td>" + loc.position + "</td></tr>");
+					    }
 
 						return false;
 					}
@@ -85,69 +159,14 @@
 					<thead>
 						<tr>
 							<td>Name</td>
-							<td>Location</td>
+							<td>Address</td>
 							<td>Distance</td>
 							<td>Company</td>
-							<td>Contacts</td>
+							<td>Position</td>
 						</tr>
 					</thead>
 					<tbody id="body">
-						<tr>
-							<td>Luke</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Ria</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Nexus</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Tom</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Jimbo</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Me</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Myself</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>I</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Luke</td>
-							<td>50, -50</td>
-							<td>50</td>
-							<td>Lexis</td>
-							<td>5</td>
-						</tr>
+						
 					</tbody>
 				</table>
 			</div>

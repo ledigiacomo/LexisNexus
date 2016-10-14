@@ -15,6 +15,16 @@
     border: black 2px solid;
 }
 
+i
+{
+	font-size: 2em;
+}
+
+p
+{
+	text-align: center;
+}
+
 #center
 {
 	position: relative;
@@ -39,12 +49,16 @@ table
 	border: black 2px solid;
 	border-radius: 5px;
 	margin: auto;
-	width: 60%;
+	width: 90%;
 }
 
-thead > tr > td
+tr > td
 {
 	border-bottom: grey 1px solid;
+}
+thead > tr > td
+{
+	border-bottom: grey 3px solid;
 }
 
 tbody > *:hover

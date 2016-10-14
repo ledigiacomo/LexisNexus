@@ -3,8 +3,7 @@
 	<head>
 		<title>Where's Waldo, Walden, and Waldorf</title>
 		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
-		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-		<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+		<script src="C:/Program Files/jquery-3.1.0.js"></script>	
 	</head>
 	<body>
 		<div id="background">
@@ -12,71 +11,94 @@
 		</div>
 		<div id="center">
 			<div id="formDiv">
-				<form id="getLoc">
+				<form onsubmit="return myMap();" id="getLoc">
 					Location: 
-					<input type="text" name="loc"></input>
-					Distance: 
-					<input type="text" name="dist"></input>
+					<select id="drop">
+					  <option value="Rocky Balboa">Rocky Balboa</option>
+					  <option value="Vladimir Putin">Vladimir Putin</option>
+					  <option value="George Bush">George Bush</option>
+					  <option value="Donald J Trump">Donald J Trump</option>
+					</select>
+					Distance (in miles): 
+					<input type="number" name="dist" value="40"></input>
 					<input type="submit"></input><br/><br/>
 				</form>
 			</div>
 			<div id="map">
 				<script>
+				var locs = 
+				[
+					{name: "Steve", latitude: 50, longitude: 50, address: "503 N Greensboro St", company: "Apple", position: "VP"},
+					{name: "Herbert", latitude: 49, longitude: 50, address: "504 N Greensboro St", company: "Hoover Industries", position: "CEO"},
+					{name: "Baldwin", latitude: 50, longitude: 50, address: "503D N Greensboro St", company: "GE", position: "President"}
+				];
 					function myMap() 
 					{
-					  var mapCanvas = document.getElementById("map");
+						var pos;
+						if(document.getElementById("drop").value == "Rocky Balboa")
+							pos = {lat: 39.9526, lng: -75.1652};
+						else if(document.getElementById("drop").value == "Vladimir Putin")
+							pos = {lat: 55.7520, lng: 37.6175};
+						else if(document.getElementById("drop").value == "George Bush")
+							pos = {lat: 31.5343, lng: -97.4431};
+						else if(document.getElementById("drop").value == "Donald J Trump")
+							pos = {lat: 40.7624, lng: -73.9738};
+						else 
+							pos = {lat: 0, lng: 0};
 
-					  function success(pos)
-					  {
-					  	var mapOptions = 
+						alert("Lat: " + pos.lat + "\nLng: " + pos.lng);
+
+						var mapCanvas = document.getElementById("map");
+
+						var mapOptions = 
 					  	{
-					    	center: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude), 
-					    	zoom: 15
-					 	}
+					   		center: new google.maps.LatLng(pos.lat, pos.lng), 
+					   		zoom: 15
+					  	}
 
-					  	var map = new google.maps.Map(mapCanvas, mapOptions);
+						var map = new google.maps.Map(mapCanvas, mapOptions);
+					  	var marker = new google.maps.Marker
+						({
+						    position: pos,
+						    map: map
+					    });
 
-					  	// var i;
-					  	// for(i = 0; i < locs.length; i++)
-					  	// {
+
+					    $(tbody).empty();
+					  	var i;
+					  	for(i = 0; i < locs.length; i++)
+					  	{
 						  	var marker = new google.maps.Marker
 						  	({
-						        position: pos,
-						        map: map,
-						        title: "Me"
+						        position: {lat: locs[i].latitude, lng: locs[i].longitude},
+						        map: map
 					        });
-						// }
-					  }
 
-					  function error(err)
-					  {
-					  	alert("ERROR: " + err.code + err.message);
-					  }
+						  	var appendTxt;
+						  	int j;
+					        for(j = 0; j < locs[i].length; j++)
+					        {
+					        	appendTxt+= "<td>" + locs[i][j] + "</td>";
+					        }
 
-					  function options(opt)
-					  {
-					  	var options = 
-					  	{
-	  						enableHighAccuracy: true,
-						  	timeout: 5000,
-						  	maximumAge: 0
-						};
-					  }
+					        $(tbody).append(appendTxt);
+						}
 
-					  navigator.geolocation.getCurrentPosition(success, error, options);
+						return false;
 					}
 				</script>
-				<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+				<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9U1nsKph3sbUjlv8so-osDe220IgzGHg&callback=myMap"></script>
 			</div>
 			<div>
 				<table>
 					<thead>
 						<tr>
 							<td>Name</td>
-							<td>Location</td>
-							<td>Distance</td>
+							<td>Latitude</td>
+							<td>Longitude</td>
+							<td>Address</td>
 							<td>Company</td>
-							<td>Contacts</td>
+							<td>Position</td>
 						</tr>
 					</thead>
 					<tbody>
