@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Where's Waldo, Walden, and Waldorf</title>
+		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+	</head>
+	<body>
+		<div id="background">
+			<img src="images\PPanther.jpg">
+		</div>
+		<div id="center">
+			<div id="formDiv">
+				<form id="getLoc">
+					Location: 
+					<input type="text" name="loc"></input>
+					Distance: 
+					<input type="text" name="dist"></input>
+					<input type="submit"></input><br/><br/>
+				</form>
+			</div>
+			<div id="map">
+				<script>
+					function myMap() 
+					{
+					  var mapCanvas = document.getElementById("map");
+
+					  function success(pos)
+					  {
+					  	var mapOptions = 
+					  	{
+					    	center: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude), 
+					    	zoom: 15
+					 	}
+
+					  	var map = new google.maps.Map(mapCanvas, mapOptions);
+
+					  	// var i;
+					  	// for(i = 0; i < locs.length; i++)
+					  	// {
+						  	var marker = new google.maps.Marker
+						  	({
+						        position: pos,
+						        map: map,
+						        title: "Me"
+					        });
+						// }
+					  }
+
+					  function error(err)
+					  {
+					  	alert("ERROR: " + err.code + err.message);
+					  }
+
+					  function options(opt)
+					  {
+					  	var options = 
+					  	{
+	  						enableHighAccuracy: true,
+						  	timeout: 5000,
+						  	maximumAge: 0
+						};
+					  }
+
+					  navigator.geolocation.getCurrentPosition(success, error, options);
+					}
+				</script>
+				<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+			</div>
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<td>Name</td>
+							<td>Location</td>
+							<td>Distance</td>
+							<td>Company</td>
+							<td>Contacts</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Luke</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Ria</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Nexus</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Tom</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Jimbo</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Me</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Myself</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>I</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Luke</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Where's Waldo, Walden, and Waldorf</title>
+		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+		<script src="C:/Program Files/jquery-3.1.0.js"></script>	
+	</head>
+	<body>
+		<div id="background">
+			<img src="images\PPanther.jpg">
+		</div>
+		<div id="center">
+			<div id="formDiv">
+				<form onsubmit="return myMap()" id="getLoc">
+					Location: 
+					<select id="drop">
+					  <option value="Rocky Balboa">Rocky Balboa</option>
+					  <option value="Vladimir Putin">Vladimir Putin</option>
+					  <option value="George Bush">George Bush</option>
+					  <option value="Donald J Trump">Donald J Trump</option>
+					</select>
+					Distance (in miles): 
+					<input type="number" name="dist" value="40"></input>
+					<input type="submit"></input><br/><br/>
+				</form>
+			</div>
+			<div id="map">
+				<script>
+				var locs = 
+				[
+					{name: "Pink", latitude: 50, longitude: 50, address: "503 N Greensboro St", contacts: 5},
+					{name: "Green", latitude: 49, longitude: 50, address: "504 N Greensboro St", contacts: 5},
+					{name: "Brown", latitude: 50, longitude: 50, address: "503D N Greensboro St", contacts: 5}
+				];
+					function myMap() 
+					{
+						var pos;
+						if(document.getElementById("drop").value == "Rocky Balboa")
+							pos = {lat: 39.9526, lng: -75.1652};
+						else if(document.getElementById("drop").value == "Vladimir Putin")
+							pos = {lat: 55.7520, lng: 37.6175};
+						else if(document.getElementById("drop").value == "George Bush")
+							pos = {lat: 31.5343, lng: -97.4431};
+						else if(document.getElementById("drop").value == "Donald J Trump")
+							pos = {lat: 40.7624, lng: -73.9738};
+						else 
+							pos = {lat: 0, lng: 0};
+
+						//alert("Lat: " + pos.lat + "\nLng: " + pos.lng);
+
+						var mapCanvas = document.getElementById("map");
+
+						var mapOptions = 
+					  	{
+					   		center: new google.maps.LatLng(pos.lat, pos.lng), 
+					   		zoom: 15
+					  	}
+
+						var map = new google.maps.Map(mapCanvas, mapOptions);
+					  	var marker = new google.maps.Marker
+						({
+						    position: pos,
+						    map: map
+					    });
+
+					    var element = document.getElementById("body");
+						document.removeChild(element);
+
+					  	var i;
+					  	for(i = 0; i < locs.length; i++)
+					  	{
+						  	var marker = new google.maps.Marker
+						  	({
+						        position: {lat: locs[i].latitude, lng: locs[i].longitude},
+						        map: map
+					        });
+						}
+
+						return false;
+					}
+				</script>
+				<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9U1nsKph3sbUjlv8so-osDe220IgzGHg&callback=myMap"></script>
+			</div>
+			<div>
+				<table id="table">
+					<thead>
+						<tr>
+							<td>Name</td>
+							<td>Location</td>
+							<td>Distance</td>
+							<td>Company</td>
+							<td>Contacts</td>
+						</tr>
+					</thead>
+					<tbody id="body">
+						<tr>
+							<td>Luke</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Ria</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Nexus</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Tom</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Jimbo</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Me</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Myself</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>I</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>Luke</td>
+							<td>50, -50</td>
+							<td>50</td>
+							<td>Lexis</td>
+							<td>5</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
